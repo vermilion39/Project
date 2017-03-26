@@ -138,11 +138,12 @@ public class TicketController {
     }
 
     @RequestMapping(value = "edit/{ticketId}", method = RequestMethod.GET)
-    public ModelAndView showEdit(@PathVariable("ticketId") long ticketId) {
+    public ModelAndView showEdit(@PathVariable("ticketId") long ticketId, Principal principal) {
         Ticket ticket = this.ticketDatabase.get(ticketId);
-        if (ticket == null) {
+        if (ticket == null || !principal.getName().equals(ticket.getCustomerName())) {
             return new ModelAndView(new RedirectView("/ticket/list", true));
         }
+
         ModelAndView modelAndView = new ModelAndView("edit");
         modelAndView.addObject("ticketId", Long.toString(ticketId));
         modelAndView.addObject("ticket", ticket);
@@ -156,9 +157,12 @@ public class TicketController {
     }
 
     @RequestMapping(value = "edit/{ticketId}", method = RequestMethod.POST)
-    public View edit(@PathVariable("ticketId") long ticketId, Form form)
+    public View edit(@PathVariable("ticketId") long ticketId, Form form, Principal principal)
             throws IOException {
         Ticket ticket = this.ticketDatabase.get(ticketId);
+        if (ticket == null || !principal.getName().equals(ticket.getCustomerName())) {
+            return new RedirectView("/ticket/list", true);
+        }
         ticket.setSubject(form.getSubject());
         ticket.setBody(form.getBody());
 
