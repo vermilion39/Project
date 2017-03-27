@@ -8,6 +8,7 @@ import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -138,9 +139,12 @@ public class TicketController {
     }
 
     @RequestMapping(value = "edit/{ticketId}", method = RequestMethod.GET)
-    public ModelAndView showEdit(@PathVariable("ticketId") long ticketId, Principal principal) {
+    public ModelAndView showEdit(@PathVariable("ticketId") long ticketId,
+            Principal principal, HttpServletRequest request) {
         Ticket ticket = this.ticketDatabase.get(ticketId);
-        if (ticket == null || !principal.getName().equals(ticket.getCustomerName())) {
+        if (ticket == null || 
+                (!request.isUserInRole("ROLE_ADMIN")
+                && !principal.getName().equals(ticket.getCustomerName()))) {
             return new ModelAndView(new RedirectView("/ticket/list", true));
         }
 
@@ -157,10 +161,13 @@ public class TicketController {
     }
 
     @RequestMapping(value = "edit/{ticketId}", method = RequestMethod.POST)
-    public View edit(@PathVariable("ticketId") long ticketId, Form form, Principal principal)
+    public View edit(@PathVariable("ticketId") long ticketId, Form form,
+            Principal principal, HttpServletRequest request)
             throws IOException {
         Ticket ticket = this.ticketDatabase.get(ticketId);
-        if (ticket == null || !principal.getName().equals(ticket.getCustomerName())) {
+        if (ticket == null || 
+                (!request.isUserInRole("ROLE_ADMIN")
+                && !principal.getName().equals(ticket.getCustomerName()))) {
             return new RedirectView("/ticket/list", true);
         }
         ticket.setSubject(form.getSubject());
