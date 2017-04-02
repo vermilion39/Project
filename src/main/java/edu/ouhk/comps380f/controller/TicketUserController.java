@@ -3,6 +3,8 @@ package edu.ouhk.comps380f.controller;
 import edu.ouhk.comps380f.dao.TicketUserRepository;
 import edu.ouhk.comps380f.model.TicketUser;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,9 +20,11 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping("user")
 public class TicketUserController {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    
     @Autowired
     TicketUserRepository ticketUserRepo;
-    
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -76,12 +80,14 @@ public class TicketUserController {
             user.addRole(role);
         }
         ticketUserRepo.create(user);
+        logger.info("User " + form.getUsername() + " created.");
         return new RedirectView("/user/list", true);
     }
 
     @RequestMapping(value = "delete/{username}", method = RequestMethod.GET)
     public View deleteTicket(@PathVariable("username") String username) {
         ticketUserRepo.deleteByUsername(username);
+        logger.info("User " + username + " deleted.");
         return new RedirectView("/user/list", true);
     }
 
