@@ -4,6 +4,7 @@ import edu.ouhk.comps380f.dao.TicketUserRepository;
 import edu.ouhk.comps380f.model.TicketUser;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,9 @@ public class TicketUserController {
 
     @Autowired
     TicketUserRepository ticketUserRepo;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = {"", "list"}, method = RequestMethod.GET)
     public String list(ModelMap model) {
@@ -67,7 +71,7 @@ public class TicketUserController {
     public View create(Form form) throws IOException {
         TicketUser user = new TicketUser();
         user.setUsername(form.getUsername());
-        user.setPassword(form.getPassword());
+        user.setPassword(passwordEncoder.encode(form.getPassword()));
         for (String role : form.getRoles()) {
             user.addRole(role);
         }

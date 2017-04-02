@@ -22,8 +22,13 @@
 
     <b:bean id="ticketUserService" class="edu.ouhk.comps380f.dao.TicketUserService" />
 
+    <b:bean id="bCryptPasswordEncoder"
+        class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+    
     <authentication-manager>
-        <authentication-provider user-service-ref="ticketUserService" />
+        <authentication-provider user-service-ref="ticketUserService">
+            <password-encoder ref="bCryptPasswordEncoder" />
+        </authentication-provider>
     </authentication-manager>
     
     <http auto-config="true">
