@@ -3,16 +3,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>edu.ouhk.comps380f</groupId>
-    <artifactId>Lab08</artifactId>
+    <artifactId>Lab09</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>Lab08</name>
+    <name>Lab09</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.framework.version>4.3.7.RELEASE</spring.framework.version>
+        <spring.security.version>4.2.2.RELEASE</spring.security.version>
     </properties>
     
     <dependencies>
@@ -72,12 +73,12 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>4.2.2.RELEASE</version>
+            <version>${spring.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>4.2.2.RELEASE</version>
+            <version>${spring.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.derby</groupId>
@@ -92,13 +93,13 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>4.3.7.RELEASE</version>
+            <version>${spring.framework.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
-            <version>4.2.2.RELEASE</version>
-        </dependency>       
+            <version>${spring.security.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
