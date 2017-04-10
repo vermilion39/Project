@@ -100,4 +100,23 @@ public class TicketUserRepositoryImpl implements TicketUserRepository {
         jdbcOp.update(SQL_DELETE_USER, username);
     }
 
+    private static final String SQL_UPDATE_USER
+            = "update users set password = ? where username = ?";
+    private static final String SQL_UPDATE_ROLE
+            = "update user_roles set role = ? where username = ?";
+    
+    /**
+     *
+     * @param username
+     * @param user
+     */
+    @Override
+    public void updateByUsername(String username, TicketUser user) {
+        for (String role : user.getRoles()) {
+            jdbcOp.update(SQL_UPDATE_ROLE,
+                    role,
+                    username);
+        }
+        jdbcOp.update(SQL_UPDATE_USER,  user.getPassword(), username);
+    }
 }
