@@ -113,7 +113,7 @@ public class TicketUserController {
     @RequestMapping(value = "update/{username}", method = RequestMethod.POST)
     public View updateUser(@PathVariable("username") String username, Form form) throws IOException {
         TicketUser user = new TicketUser();
-        user.setUsername(form.getUsername());
+        //user.setUsername(form.getUsername());
         user.setPassword(form.getPassword());
         for (String role : form.getRoles()) {
             user.addRole(role);

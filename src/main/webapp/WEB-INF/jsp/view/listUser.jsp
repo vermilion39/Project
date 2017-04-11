@@ -12,12 +12,14 @@
         <br /><br />
         <a href="<c:url value="/ticket" />">Return to list tickets</a>
         <h2>Users</h2>
-        <a href="<c:url value="/user/create" />">Create a User</a><br /><br />
+        <a href="<c:url value="/user/create" />">Create a User</a>
         <c:choose>
             <c:when test="${fn:length(ticketUsers) == 0}">
                 <i>There are no users in the system.</i>
             </c:when>
             <c:otherwise>
+                <h2> Start a new poll</h2>
+                <a href="<c:url value="/poll/newPoll" />">New Poll</a><br /><br />
                 <table>
                     <tr>
                         <th>Username</th>

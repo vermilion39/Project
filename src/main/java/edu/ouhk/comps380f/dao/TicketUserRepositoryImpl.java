@@ -1,5 +1,6 @@
 package edu.ouhk.comps380f.dao;
 
+import edu.ouhk.comps380f.model.Poll;
 import edu.ouhk.comps380f.model.TicketUser;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -102,8 +103,6 @@ public class TicketUserRepositoryImpl implements TicketUserRepository {
 
     private static final String SQL_UPDATE_USER
             = "update users set password = ? where username = ?";
-    private static final String SQL_UPDATE_ROLE
-            = "update user_roles set role = ? where username = ?";
     
     /**
      *
@@ -112,11 +111,19 @@ public class TicketUserRepositoryImpl implements TicketUserRepository {
      */
     @Override
     public void updateByUsername(String username, TicketUser user) {
+        jdbcOp.update(SQL_DELETE_ROLES, username);
         for (String role : user.getRoles()) {
-            jdbcOp.update(SQL_UPDATE_ROLE,
-                    role,
-                    username);
+            jdbcOp.update(SQL_INSERT_ROLE,
+                    username,
+                    role);
         }
         jdbcOp.update(SQL_UPDATE_USER,  user.getPassword(), username);
+    }
+    
+    private static final String SQL_NEW_POLL
+            = "insert into poll (title, optionA, optionB, optionC, optionD) values (?,?,?,?,?)";
+    
+    public void newPoll(Poll nPoll) {
+        
     }
 }

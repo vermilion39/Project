@@ -1,5 +1,6 @@
 package edu.ouhk.comps380f.dao;
 
+import edu.ouhk.comps380f.model.Poll;
 import edu.ouhk.comps380f.model.TicketUser;
 import java.util.List;
 
@@ -9,4 +10,5 @@ public interface TicketUserRepository {
     public TicketUser findByUsername(String username);
     public void deleteByUsername(String username);
     public void updateByUsername(String username, TicketUser user);
+    public void newPoll(Poll nPoll);
 }
