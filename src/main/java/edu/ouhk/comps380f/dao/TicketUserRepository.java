@@ -8,4 +8,5 @@ public interface TicketUserRepository {
     public List<TicketUser> findAll();
     public TicketUser findByUsername(String username);
     public void deleteByUsername(String username);
+    public void updateByUsername(String username, TicketUser user);
 }

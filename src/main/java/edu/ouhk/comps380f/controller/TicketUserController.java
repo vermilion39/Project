@@ -6,7 +6,6 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,9 +23,6 @@ public class TicketUserController {
     
     @Autowired
     TicketUserRepository ticketUserRepo;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = {"", "list"}, method = RequestMethod.GET)
     public String list(ModelMap model) {
@@ -70,12 +66,17 @@ public class TicketUserController {
     public ModelAndView create() {
         return new ModelAndView("addUser", "ticketUser", new Form());
     }
+    
+    @RequestMapping(value = "register", method = RequestMethod.GET)
+    public ModelAndView register() {
+        return new ModelAndView("register", "ticketUser", new Form());
+    }
 
     @RequestMapping(value = "create", method = RequestMethod.POST)
     public View create(Form form) throws IOException {
         TicketUser user = new TicketUser();
         user.setUsername(form.getUsername());
-        user.setPassword(passwordEncoder.encode(form.getPassword()));
+        user.setPassword(form.getPassword());
         for (String role : form.getRoles()) {
             user.addRole(role);
         }
@@ -83,11 +84,42 @@ public class TicketUserController {
         logger.info("User " + form.getUsername() + " created.");
         return new RedirectView("/user/list", true);
     }
+    
+    @RequestMapping(value = "register", method = RequestMethod.POST)
+    public View register(Form form) throws IOException {
+        TicketUser user = new TicketUser();
+        user.setUsername(form.getUsername());
+        user.setPassword(form.getPassword());
+        for (String role : form.getRoles()) {
+            user.addRole(role);
+        }
+        ticketUserRepo.create(user);
+        logger.info("User " + form.getUsername() + " created.");
+        return new RedirectView("/index", true);
+    }
 
     @RequestMapping(value = "delete/{username}", method = RequestMethod.GET)
-    public View deleteTicket(@PathVariable("username") String username) {
+    public View deleteUser(@PathVariable("username") String username) {
         ticketUserRepo.deleteByUsername(username);
         logger.info("User " + username + " deleted.");
+        return new RedirectView("/user/list", true);
+    }
+    
+    @RequestMapping(value = "update/{username}", method = RequestMethod.GET)
+    public ModelAndView update() {
+        return new ModelAndView("updateUser", "ticketUser", new Form());
+    }
+    
+    @RequestMapping(value = "update/{username}", method = RequestMethod.POST)
+    public View updateUser(@PathVariable("username") String username, Form form) throws IOException {
+        TicketUser user = new TicketUser();
+        user.setUsername(form.getUsername());
+        user.setPassword(form.getPassword());
+        for (String role : form.getRoles()) {
+            user.addRole(role);
+        }
+        ticketUserRepo.updateByUsername(username, user);
+        logger.info("User " + username + " updated.");
         return new RedirectView("/user/list", true);
     }
 

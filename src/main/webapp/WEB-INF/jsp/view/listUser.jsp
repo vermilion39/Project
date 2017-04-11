@@ -36,6 +36,7 @@
                                 </c:forEach>
                             </td>
                             <td>[<a href="<c:url value="/user/delete/${user.username}" />">Delete</a>]</td>
+                            <td>[<a href="<c:url value="/user/update/${user.username}" />">Update</a>]</td>
                         </tr>
                     </c:forEach>
                 </table>
